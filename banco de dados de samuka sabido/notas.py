@@ -36,8 +36,8 @@ print("---" * 25)
 print("alterando a nota")
 
 cursor.execute(
-    "UPDATE boletim SET nota2 = ? WHERE nome = ?",
-    (3.5, 'van helsing')
+    "UPDATE boletim SET nota2 = ? WHERE id = ?",
+    (3.5, '3')
 )
 banco.commit()
 
@@ -52,22 +52,20 @@ banco.commit()
 print("-" * 25)
 
 # registrando se tá passado ou não
-print("resultado")
+print("Resultado final:")
+cursor.execute("SELECT id, aluno, disciplina, nota1, nota2 FROM boletim")
+registros = cursor.fetchall()
 
-cursor.execute("SELECT aluno FROM boletim")
-alunos = cursor.fetchall()
-cursor.execute("SELECT disciplina FROM boletim")
-disciplinas = cursor.fetchall()
-cursor.execute("SELECT nota1 FROM boletim")
-notas1 = cursor.fetchall()
-cursor.execute("SELECT nota2 FROM boletim")
-notas2 = cursor.fetchall()
-
-for aluno in alunos:
-    print('aluno: ', aluno)
-
-
-            
+for id_aluno, aluno, disciplina, nota1, nota2 in registros:
+    media = (nota1 + nota2) / 2
+    print(f"Aluno: {aluno}")
+    print(f"Disciplina: {disciplina}")
+    print(f"Nota 1 = {nota1} | Nota 2 = {nota2} | Média = {media:.1f}")
+    
+    if media >= 6:
+        print(f"Situação: {aluno} passou!\n")
+    else:
+        print(f"Situação: {aluno} reprovou.\n")
 
 
 # fechando o banco
